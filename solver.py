@@ -22,12 +22,19 @@ class Solver(object):
         self.best_acc = 0
         self.time_taken = None
 
-        if self.args.dset == 'u2m' or self.args.dset == 'm2u':
+        if self.args.dset == 'u2m' or self.args.dset == 'm2u' or self.args.dset == 'm2mm':
             self.enc = encoder_small(self.args).cuda()
         else:
             self.enc = encoder(self.args).cuda()
         self.clf = classifier(self.args).cuda()
         self.fd = discriminator(self.args).cuda()
+
+        print('--------Network--------')
+        print(self.enc)
+        print(self.clf)
+
+        print('--------Feature Disc--------')
+        print(self.fd)
 
         self.fake_label = torch.FloatTensor(self.args.batch_size, 1).fill_(0).cuda()
         self.real_label = torch.FloatTensor(self.args.batch_size, 1).fill_(1).cuda()
@@ -40,13 +47,7 @@ class Solver(object):
             else:
                 print("Training Source model...")
                 self.src()
-
-        print('--------Network--------')
-        print(self.enc)
-        print(self.clf)
-
-        print('--------Feature Disc--------')
-        print(self.fd)
+                self.test()
 
     def test_dataset(self, db='t_test'):
         self.enc.eval()

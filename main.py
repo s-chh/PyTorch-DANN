@@ -80,9 +80,9 @@ def print_args(args):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Glocal')
+    parser = argparse.ArgumentParser(description='DANN')
     parser.add_argument('--p_thresh', type=float, default=0.9)
-    parser.add_argument('--method', type=str, default='src', choices=['src', 'dann'])
+    parser.add_argument('--method', type=str, default='dann', choices=['src', 'dann'])
 
     parser.add_argument('--src_epochs', type=int, default=50)
     parser.add_argument('--batch_size', type=int, default=128)
@@ -92,9 +92,9 @@ if __name__ == '__main__':
     parser.add_argument('--log_step', type=int, default=50)
 
     parser.add_argument('--dset', type=str, default='s2m', choices=['s2m', 'u2m', 'm2u', 'm2mm', 'sd2sv', 'signs'])
-    parser.add_argument('--data_path', type=str, default='/home/local/ASUAD/nsthaku1/DB/digits/')
+    parser.add_argument('--data_path', type=str, default='./data/')
     parser.add_argument('--model_path', type=str, default='./model')
-    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--seed', type=int, default=100)
 
     args = parser.parse_args()
     args = update_args(args)
