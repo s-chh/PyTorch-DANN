@@ -9,13 +9,7 @@ from solver import Solver
 
 
 def main(args):
-    if not os.path.exists(args.src_model_path):
-        os.makedirs(args.src_model_path)
-
-    if not args.method == 'src':
-        if not os.path.exists(args.src_model_path):
-            os.makedirs(args.src_model_path)
-            # os.makedirs(args.model_path, exist_ok=True)
+    os.makedirs(args.model_path, exist_ok=True)
 
     solver = Solver(args)
 
@@ -66,8 +60,7 @@ def update_args(args):
     else:
         assert "Incorrect combination"
 
-    args.src_model_path = os.path.join(args.model_path, args.dset, 'src')
-    args.model_path = os.path.join(args.model_path, args.dset, args.method)
+    args.model_path = os.path.join(args.model_path, args.dset)
     args.adapt_test_epoch = args.adapt_epochs // 10
 
     return args
@@ -82,11 +75,11 @@ def print_args(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='DANN')
     parser.add_argument('--p_thresh', type=float, default=0.9)
-    parser.add_argument('--method', type=str, default='dann', choices=['src', 'dann'])
+    parser.add_argument('--method', type=str, default='src', choices=['src', 'dann'])
 
     parser.add_argument('--src_epochs', type=int, default=50)
     parser.add_argument('--batch_size', type=int, default=128)
-    parser.add_argument('--num_workers', type=int, default=8)
+    parser.add_argument('--num_workers', type=int, default=4)
     parser.add_argument('--lr', type=float, default=1e-4)
     parser.add_argument('--weight_decay', type=float, default=1e-5)
     parser.add_argument('--log_step', type=int, default=50)

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import os
 from torch import optim
-from model import encoder, encoder_small, classifier, discriminator
+from model import encoder, classifier, discriminator
 from sklearn.metrics import confusion_matrix, accuracy_score
 from utils import adjust_alpha
 from data_loader import get_loader
@@ -22,10 +22,7 @@ class Solver(object):
         self.best_acc = 0
         self.time_taken = None
 
-        if self.args.dset == 'u2m' or self.args.dset == 'm2u' or self.args.dset == 'm2mm':
-            self.enc = encoder_small(self.args).cuda()
-        else:
-            self.enc = encoder(self.args).cuda()
+        self.enc = encoder(self.args).cuda()
         self.clf = classifier(self.args).cuda()
         self.fd = discriminator(self.args).cuda()
 
@@ -40,10 +37,10 @@ class Solver(object):
         self.real_label = torch.FloatTensor(self.args.batch_size, 1).fill_(1).cuda()
 
         if not args.method == 'src':
-            if os.path.exists(os.path.join(self.args.src_model_path, 'src_enc.pt')):
+            if os.path.exists(os.path.join(self.args.model_path, 'src_enc.pt')):
                 print("Loading Source model...")
-                self.enc.load_state_dict(torch.load(os.path.join(self.args.src_model_path, 'src_enc.pt')))
-                self.clf.load_state_dict(torch.load(os.path.join(self.args.src_model_path, 'src_clf.pt')))
+                self.enc.load_state_dict(torch.load(os.path.join(self.args.model_path, 'src_enc.pt')))
+                self.clf.load_state_dict(torch.load(os.path.join(self.args.model_path, 'src_clf.pt')))
             else:
                 print("Training Source model...")
                 self.src()
@@ -154,8 +151,8 @@ class Solver(object):
                     best_enc = copy.deepcopy(self.enc.state_dict())
                     best_clf = copy.deepcopy(self.clf.state_dict())
 
-        torch.save(best_enc, os.path.join(self.args.src_model_path, 'src_enc.pt'))
-        torch.save(best_clf, os.path.join(self.args.src_model_path, 'src_clf.pt'))
+        torch.save(best_enc, os.path.join(self.args.model_path, 'src_enc.pt'))
+        torch.save(best_clf, os.path.join(self.args.model_path, 'src_clf.pt'))
 
         self.enc.load_state_dict(best_enc)
         self.clf.load_state_dict(best_clf)
@@ -219,3 +216,7 @@ class Solver(object):
                 print("Target test acc: %0.2f" % (t_test_acc))
                 if self.args.cm:
                     print(cm)
+
+        torch.save(self.enc.state_dict(), os.path.join(self.args.model_path, 'dann_enc.pt'))
+        torch.save(self.clf.state_dict(), os.path.join(self.args.model_path, 'dann_clf.pt'))
+        torch.save(self.fd.state_dict(), os.path.join(self.args.model_path, 'dann_disc.pt'))

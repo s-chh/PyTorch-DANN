@@ -1,12 +1,11 @@
-# s2m
-python3 -u main.py --dset s2m
+python main.py --dset s2m
 
-python3 -u main.py --dset u2m
+python main.py --dset u2m
 
-python3 -u main.py --dset m2u
+python main.py --dset m2u
 
-python3 -u main.py --dset m2mm
+python main.py --dset m2mm
 
-python3 -u main.py --dset signs
+python main.py --dset signs
 
-python3 -u main.py --dset sd2sv
+python main.py --dset sd2sv
