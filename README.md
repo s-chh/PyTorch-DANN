@@ -9,10 +9,10 @@ Results:
  | Dataset    |Source Only    | DANN |
 --- | --- | --- | 
 SVHN &#10230; MNIST | 61.2|79.7 |
-MNIST &#10230; USPS | 82.4 | 88.1|
-USPS &#10230; MNIST | 50.6| 92.3|
-MNIST &#10230; MNIST-M |42.5 | 64.5|
-SyDigits &#10230; SVHN | | |
+MNIST &#10230; USPS | 81.8 | 88.4|
+USPS &#10230; MNIST | 49.4| 95.7|
+MNIST &#10230; MNIST-M |57.2 | 71.9|
+SyDigits &#10230; SVHN |87.9 | 90.6|
 SySigns &#10230; GTSRB | 91.0| 92.8|
 
 
