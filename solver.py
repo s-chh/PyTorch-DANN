@@ -102,13 +102,6 @@ class Solver(object):
 
         return s_train_acc, s_test_acc, t_train_acc, t_test_acc
 
-    def get_local(self, domain_out, labels):
-        y_onehot = F.one_hot(labels, self.args.num_classes).float()
-        domain_out = domain_out * y_onehot
-        domain_out = domain_out.sum(1, keepdim=True)
-
-        return domain_out
-
     def src(self):
         total_iters = 0
         self.best_acc = 0
